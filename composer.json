@@ -10,6 +10,7 @@
         }
     ],
     "require": {
+        "php": ">=5.5",
         "symfony/expression-language": "2.5.x-dev",
         "doctrine/cache": "1.4.x-dev"
     },
