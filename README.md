@@ -59,7 +59,7 @@ foreach ([$userOne, $userTwo] as $user) {
 
 Output:
 
-    User 3000 cannot(1) see new interface
+    User 3000 cannot(!) see new interface
     User 1500 can see new interface
 
 
