@@ -1,5 +1,7 @@
 ## PHP 5.5 feature toggle library
 
+[![Build Status](https://travis-ci.org/niborb/php-feature-toggle.png?branch=master)](https://travis-ci.org/niborb/php-feature-toggle)
+
 ### Installation
 
 You can install the library with Composer.
