@@ -1,0 +1,26 @@
+{
+    "name": "niborb/php-feature-toggle",
+    "description": "A PHP Feature toggle library",
+    "minimum-stability": "stable",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Robin Breuker",
+            "email": "robin02@gmail.com"
+        }
+    ],
+    "require": {
+        "symfony/expression-language": "2.5.x-dev",
+        "doctrine/cache": "1.4.x-dev"
+    },
+    "require-dev": {
+        "phpspec/phpspec": "~2.0",
+        "henrikbjorn/phpspec-code-coverage": "*"
+
+    },
+    "autoload" : {
+        "psr-4": {
+            "Niborb\\FeatureToggle\\": "src/Niborb/FeatureToggle"
+        }
+    }
+}
