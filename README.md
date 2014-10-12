@@ -9,6 +9,8 @@ You can install the library with Composer.
 
     composer.phar require "niborb/php-feature-toggle"
 
+or check packagist.org: https://packagist.org/packages/niborb/php-feature-toggle
+
 ### Example (see also the examples directory)
 
 ```php
@@ -53,6 +55,7 @@ foreach ([$userOne, $userTwo] as $user) {
         echo "User " . $user->getId() . " cannot(!) see new interface" . PHP_EOL;
     }
 }
+```
 
 Output:
 
