@@ -2,4 +2,5 @@
 coverage
 vendor
 composer.phar
+
 atlassian-ide-plugin.xml
