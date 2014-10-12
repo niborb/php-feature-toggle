@@ -12,7 +12,7 @@ $toggle = new Toggle();
 $feature = new Feature('user-interface-2.0');
 $feature->enable();
 
-// add user to the toggle manager
+// add feature to the toggle manager
 $toggle->addFeature($feature);
 
 if ($toggle->isEnabled('user-interface-2.0')) {

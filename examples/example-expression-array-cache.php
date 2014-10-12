@@ -26,7 +26,7 @@ $feature = new Feature('user-interface-2.0');
 $feature->enable();
 $feature->setExpression('user.getId() in 1000..2000');
 
-// add user to the toggle manager
+// add feature to the toggle manager
 $toggle->addFeature($feature);
 
 // some users as context
