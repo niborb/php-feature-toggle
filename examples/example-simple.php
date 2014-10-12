@@ -9,7 +9,6 @@ use Niborb\FeatureToggle\Toggle;
 
 $toggle = new Toggle();
 
-// new user interface only available for users with an ID in range (1000-2000)
 $feature = new Feature('user-interface-2.0');
 $feature->enable();
 
