@@ -7,3 +7,6 @@ php:
 before_script: composer install
 
 script: vendor/bin/phpspec run
+
+after_script:
+ - vendor/bin/coveralls -v
