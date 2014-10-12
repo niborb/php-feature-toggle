@@ -1,6 +1,9 @@
 .idea
 coverage
+clover.xml
+coverage.xml
 vendor
 composer.phar
+composer.lock
 
 atlassian-ide-plugin.xml
