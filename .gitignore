@@ -1,10 +1,10 @@
 .idea
 coverage
+coverage.xml
 clover.xml
 coverage.xml
 vendor
 composer.phar
 composer.lock
 build
-
 atlassian-ide-plugin.xml
