@@ -4,18 +4,19 @@ namespace Niborb\FeatureToggle\DataProvider;
 
 use Niborb\FeatureToggle\DataProvider;
 use Niborb\FeatureToggle\Entity\Feature;
+use Niborb\FeatureToggle\Entity\FeatureInterface;
 use Traversable;
 
 class ArrayDataProvider implements DataProvider, \IteratorAggregate
 {
 
     /**
-     * @var Feature[]
+     * @var FeatureInterface[]
      */
     private $features = [];
 
     /**
-     * @param Feature[] $features
+     * @param FeatureInterface[] $features
      */
     public function __construct(array $features = [])
     {
@@ -24,7 +25,7 @@ class ArrayDataProvider implements DataProvider, \IteratorAggregate
 
     /**
      * @param string $featureName
-     * @return null|Feature null if feature cannot be fetched
+     * @return null|FeatureInterface null if feature cannot be fetched
      */
     public function fetchFeature($featureName)
     {
@@ -36,10 +37,10 @@ class ArrayDataProvider implements DataProvider, \IteratorAggregate
     }
 
     /**
-     * @param Feature $feature
+     * @param FeatureInterface $feature
      * @return $this
      */
-    public function addFeature(Feature $feature)
+    public function addFeature(FeatureInterface $feature)
     {
         $this->features[$feature->getName()] = $feature;
 
@@ -47,12 +48,12 @@ class ArrayDataProvider implements DataProvider, \IteratorAggregate
     }
 
     /**
-     * @param Feature[] $features
+     * @param FeatureInterface[] $features
      */
     public function addFeatures(array $features)
     {
         array_walk($features, function (&$value, $key) {
-            if (!$value instanceof Feature) {
+            if (!$value instanceof FeatureInterface) {
                 throw new \LogicException('Item ' . $key . ' is not a Feature');
             }
 

@@ -7,7 +7,7 @@
 namespace Niborb\FeatureToggle;
 
 
-use Niborb\FeatureToggle\Entity\Feature;
+use Niborb\FeatureToggle\Entity\FeatureInterface;
 
 /**
  * Interface DataProvider
@@ -18,14 +18,14 @@ interface DataProvider
 
     /**
      * @param $featureName
-     * @return null|Feature
+     * @return null|FeatureInterface
      */
     public function fetchFeature($featureName);
 
     /**
-     * @param Feature $feature
+     * @param FeatureInterface $feature
      * @return DataProvider
      */
-    public function addFeature(Feature $feature);
+    public function addFeature(FeatureInterface $feature);
 
 } 

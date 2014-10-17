@@ -3,7 +3,8 @@
 namespace Niborb\FeatureToggle;
 
 use Niborb\FeatureToggle\DataProvider\ArrayDataProvider;
-use Niborb\FeatureToggle\Entity\Feature;
+use Niborb\FeatureToggle\Entity\FeatureExpressionInterface;
+use Niborb\FeatureToggle\Entity\FeatureInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
 /**
@@ -36,11 +37,11 @@ class Toggle
     }
 
     /**
-     * @param Feature $feature
+     * @param FeatureInterface $feature
      *
      * @return $this
      */
-    public function addFeature(Feature $feature)
+    public function addFeature(FeatureInterface $feature)
     {
         $this->getDataProvider()->addFeature($feature);
 
@@ -48,10 +49,10 @@ class Toggle
     }
 
     /**
-     * @param Feature $feature
+     * @param FeatureInterface $feature
      * @return bool
      */
-    public function hasFeature(Feature $feature)
+    public function hasFeature(FeatureInterface $feature)
     {
         return null !== $this->getDataProvider()->fetchFeature($feature->getName());
     }
@@ -66,24 +67,30 @@ class Toggle
      */
     public function isEnabled($featureName, array $context = [])
     {
+        $isEnabled = false;
         $feature = $this->getDataProvider()->fetchFeature($featureName);
         if (null !== $feature){
-            return $feature->isEnabled() && $this->validate($feature, $context);
+            $isEnabled = $feature->isEnabled();
+
+            if ($isEnabled && $feature instanceof FeatureExpressionInterface) {
+                $isEnabled = $this->validate($feature, $context);
+            }
         }
 
-        return false;
+        return $isEnabled;
     }
 
     /**
-     * @param Feature $feature
+     * @param FeatureExpressionInterface $feature
      * @param array $context
      *
      * @throws \RuntimeException if expression could not be validated
      *
      * @return bool|string
      */
-    private function validate(Feature $feature, array $context = [])
+    private function validate(FeatureExpressionInterface $feature, array $context = [])
     {
+
         $expression = $feature->getExpression();
         if ('' !== $expression
             && $this->expressionLanguage instanceof ExpressionLanguage

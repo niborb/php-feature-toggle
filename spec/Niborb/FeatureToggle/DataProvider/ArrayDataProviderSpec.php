@@ -3,7 +3,7 @@
 namespace spec\Niborb\FeatureToggle\DataProvider;
 
 use Niborb\FeatureToggle\DataProvider\ArrayDataProvider;
-use Niborb\FeatureToggle\Entity\Feature;
+use Niborb\FeatureToggle\Entity\FeatureInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -23,7 +23,7 @@ class ArrayDataProviderSpec extends ObjectBehavior
     }
 
     function it_could_be_constructed_with_an_array_of_features(
-        Feature $feature, Feature $otherFeature
+        FeatureInterface $feature, FeatureInterface $otherFeature
     )
     {
         $features = [$feature, $otherFeature];
@@ -41,7 +41,7 @@ class ArrayDataProviderSpec extends ObjectBehavior
 
 
     function it_should_be_able_to_fetch_feature_by_name(
-        Feature $feature
+        FeatureInterface $feature
     )
     {
         $this->beConstructedWith([$feature]);
@@ -54,7 +54,7 @@ class ArrayDataProviderSpec extends ObjectBehavior
     }
 
     function it_should_be_able_to_fetch_features_passed_by_constructor(
-        Feature $featureOne, Feature $featureTwo
+        FeatureInterface $featureOne, FeatureInterface $featureTwo
     )
     {
         $featureOne->getName()->willReturn('feature-one')->shouldBeCalled();

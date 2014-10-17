@@ -22,6 +22,8 @@ class FeatureSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType('Niborb\FeatureToggle\Entity\Feature');
+        $this->shouldHaveType('Niborb\FeatureToggle\Entity\FeatureInterface');
+        $this->shouldHaveType('Niborb\FeatureToggle\Entity\FeatureExpressionInterface');
     }
 
     function it_has_a_name()
@@ -60,7 +62,7 @@ class FeatureSpec extends ObjectBehavior
         $this->getExpression()->shouldReturn('2 < 3');
     }
 
-    function it_should_throw_an_exception_if_constructed_with_empty_name()
+    function it_throws_an_exception_if_constructed_with_empty_name()
     {
         $e = null;
         try {

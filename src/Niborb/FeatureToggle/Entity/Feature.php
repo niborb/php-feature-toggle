@@ -2,7 +2,7 @@
 
 namespace Niborb\FeatureToggle\Entity;
 
-class Feature
+class Feature implements FeatureExpressionInterface
 {
 
     /**
