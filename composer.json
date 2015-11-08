@@ -11,8 +11,8 @@
     ],
     "require": {
         "php": ">=5.5",
-        "symfony/expression-language": "2.5.*",
-        "doctrine/cache": "1.4.x-dev"
+        "symfony/expression-language": "^2.5",
+        "doctrine/cache": "^1.4"
     },
     "require-dev": {
         "phpspec/phpspec": "~2.0",
