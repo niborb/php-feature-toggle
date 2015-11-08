@@ -1,4 +1,4 @@
-## PHP 5.5 feature toggle library
+## PHP 5 feature toggle library
 
 [![Build Status](https://travis-ci.org/niborb/php-feature-toggle.png?branch=master)](https://travis-ci.org/niborb/php-feature-toggle)
 [![Coverage Status](https://img.shields.io/coveralls/niborb/php-feature-toggle.svg)](https://coveralls.io/r/niborb/php-feature-toggle)
