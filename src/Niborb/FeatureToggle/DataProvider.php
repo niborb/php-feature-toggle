@@ -1,31 +1,14 @@
 <?php
-/**
- * @copyright 2ndInterface 2014 - Robin Breuker
- */
 
+declare(strict_types=1);
 
 namespace Niborb\FeatureToggle;
 
-
 use Niborb\FeatureToggle\Entity\FeatureInterface;
 
-/**
- * Interface DataProvider
- * @package Niborb\FeatureToggle
- */
 interface DataProvider
 {
+    public function fetchFeature(string $featureName): ?FeatureInterface;
 
-    /**
-     * @param $featureName
-     * @return null|FeatureInterface
-     */
-    public function fetchFeature($featureName);
-
-    /**
-     * @param FeatureInterface $feature
-     * @return DataProvider
-     */
-    public function addFeature(FeatureInterface $feature);
-
-} 
+    public function addFeature(FeatureInterface $feature): static;
+}

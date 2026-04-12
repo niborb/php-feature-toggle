@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Niborb\FeatureToggle;
 
 use Niborb\FeatureToggle\DataProvider\ArrayDataProvider;
@@ -7,127 +9,62 @@ use Niborb\FeatureToggle\Entity\FeatureExpressionInterface;
 use Niborb\FeatureToggle\Entity\FeatureInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
-/**
- * Class Toggle
- * @package Niborb\FeatureToggle
- */
-class Toggle
+final class Toggle
 {
-    /**
-     * @var ExpressionLanguage
-     */
-    private $expressionLanguage;
+    private DataProvider $dataProvider;
 
-    /**
-     * @var DataProvider
-     */
-    private $dataProvider;
+    public function __construct(
+        private readonly ?ExpressionLanguage $expressionLanguage = null,
+        ?DataProvider $dataProvider = null,
+    ) {
+        $this->dataProvider = $dataProvider ?? new ArrayDataProvider();
+    }
 
-
-    /**
-     * @param ExpressionLanguage $expressionLanguage
-     *
-     * @return $this
-     */
-    public function setExpressionLanguage(ExpressionLanguage $expressionLanguage)
+    public function addFeature(FeatureInterface $feature): static
     {
-        $this->expressionLanguage = $expressionLanguage;
+        $this->dataProvider->addFeature($feature);
 
         return $this;
     }
 
-    /**
-     * @param FeatureInterface $feature
-     *
-     * @return $this
-     */
-    public function addFeature(FeatureInterface $feature)
+    public function hasFeature(FeatureInterface $feature): bool
     {
-        $this->getDataProvider()->addFeature($feature);
-
-        return $this;
+        return $this->dataProvider->fetchFeature($feature->getName()) !== null;
     }
 
     /**
-     * @param FeatureInterface $feature
-     * @return bool
-     */
-    public function hasFeature(FeatureInterface $feature)
-    {
-        return null !== $this->getDataProvider()->fetchFeature($feature->getName());
-    }
-
-    /**
-     * @param string $featureName
-     * @param array $context
+     * @param array<string, mixed> $context
      *
-     * @throws \RuntimeException if expression could not be validated
-     *
-     * @return bool
+     * @throws \RuntimeException if the feature expression could not be evaluated
      */
-    public function isEnabled($featureName, array $context = [])
+    public function isEnabled(string $featureName, array $context = []): bool
     {
-        $isEnabled = false;
-        $feature = $this->getDataProvider()->fetchFeature($featureName);
-        if (null !== $feature){
-            $isEnabled = $feature->isEnabled();
-
-            if ($isEnabled && $feature instanceof FeatureExpressionInterface) {
-                $isEnabled = $this->validate($feature, $context);
-            }
+        $feature = $this->dataProvider->fetchFeature($featureName);
+        if ($feature === null || !$feature->isEnabled()) {
+            return false;
         }
 
-        return $isEnabled;
+        if ($feature instanceof FeatureExpressionInterface) {
+            return $this->validate($feature, $context);
+        }
+
+        return true;
     }
 
     /**
-     * @param FeatureExpressionInterface $feature
-     * @param array $context
-     *
-     * @throws \RuntimeException if expression could not be validated
-     *
-     * @return bool|string
+     * @param array<string, mixed> $context
      */
-    private function validate(FeatureExpressionInterface $feature, array $context = [])
+    private function validate(FeatureExpressionInterface $feature, array $context): bool
     {
-
         $expression = $feature->getExpression();
-        if ('' !== $expression
-            && $this->expressionLanguage instanceof ExpressionLanguage
-        ) {
-            try {
-                return (bool) $this->expressionLanguage->evaluate($expression, $context);
-            } catch(\Exception $e) {
-                throw new \RuntimeException("Could not evaluate expression " . $expression, 0, $e);
-            }
-
+        if ($expression === '' || $this->expressionLanguage === null) {
+            return true;
         }
 
-        return true; // no expression to validate
-    }
-
-    /**
-     * @return DataProvider
-     */
-    private function getDataProvider()
-    {
-        if (!$this->dataProvider) {
-            $this->dataProvider = new ArrayDataProvider();
+        try {
+            return (bool) $this->expressionLanguage->evaluate($expression, $context);
+        } catch (\Throwable $e) {
+            throw new \RuntimeException('Could not evaluate expression ' . $expression, 0, $e);
         }
-
-        return $this->dataProvider;
-    }
-
-
-    /**
-     * @param DataProvider $dataProvider
-     *
-     * @return $this
-     */
-    public function setDataProvider(DataProvider $dataProvider)
-    {
-        $this->dataProvider = $dataProvider;
-
-        return $this;
     }
 }

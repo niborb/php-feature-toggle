@@ -1,23 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Niborb\FeatureToggle\Entity;
 
-
-/**
- * Interface FeatureInterface
- * @package Niborb\FeatureToggle\Entity
- */
 interface FeatureExpressionInterface extends FeatureInterface
 {
-    /**
-     * @param $expression
-     * @return FeatureExpressionInterface
-     */
-    public function setExpression($expression);
+    public function setExpression(string $expression): static;
 
-    /**
-     * @return string
-     */
-    public function getExpression();
-
+    public function getExpression(): string;
 }
