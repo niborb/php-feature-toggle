@@ -1,8 +1,9 @@
 {
     "name": "niborb/php-feature-toggle",
-    "description": "A PHP Feature toggle library",
-    "minimum-stability": "stable",
+    "description": "A PHP feature toggle library",
+    "type": "library",
     "license": "MIT",
+    "minimum-stability": "stable",
     "authors": [
         {
             "name": "Robin Breuker",
@@ -10,19 +11,29 @@
         }
     ],
     "require": {
-        "php": ">=5.5",
-        "symfony/expression-language": "^2.5",
-        "doctrine/cache": "^1.4"
+        "php": "^8.2",
+        "symfony/expression-language": "^6.4 || ^7.0"
     },
     "require-dev": {
-        "phpspec/phpspec": "~2.0",
-        "henrikbjorn/phpspec-code-coverage": "*",
-        "satooshi/php-coveralls": "dev-master"
-
+        "phpunit/phpunit": "^11.0",
+        "phpstan/phpstan": "^1.11",
+        "symfony/cache": "^6.4 || ^7.0"
     },
-    "autoload" : {
+    "autoload": {
         "psr-4": {
-            "Niborb\\FeatureToggle\\": "src/Niborb/FeatureToggle"
+            "Niborb\\FeatureToggle\\": "src/Niborb/FeatureToggle/"
         }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Niborb\\FeatureToggle\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "phpstan": "phpstan analyse"
+    },
+    "config": {
+        "sort-packages": true
     }
 }

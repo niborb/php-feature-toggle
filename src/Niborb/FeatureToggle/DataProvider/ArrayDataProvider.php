@@ -1,46 +1,36 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Niborb\FeatureToggle\DataProvider;
 
 use Niborb\FeatureToggle\DataProvider;
-use Niborb\FeatureToggle\Entity\Feature;
 use Niborb\FeatureToggle\Entity\FeatureInterface;
-use Traversable;
 
+/**
+ * @implements \IteratorAggregate<string, FeatureInterface>
+ */
 class ArrayDataProvider implements DataProvider, \IteratorAggregate
 {
+    /**
+     * @var array<string, FeatureInterface>
+     */
+    private array $features = [];
 
     /**
-     * @var FeatureInterface[]
+     * @param iterable<mixed> $features
      */
-    private $features = [];
-
-    /**
-     * @param FeatureInterface[] $features
-     */
-    public function __construct(array $features = [])
+    public function __construct(iterable $features = [])
     {
         $this->addFeatures($features);
     }
 
-    /**
-     * @param string $featureName
-     * @return null|FeatureInterface null if feature cannot be fetched
-     */
-    public function fetchFeature($featureName)
+    public function fetchFeature(string $featureName): ?FeatureInterface
     {
-        if (array_key_exists($featureName, $this->features)) {
-            return $this->features[$featureName];
-        }
-
-        return null;
+        return $this->features[$featureName] ?? null;
     }
 
-    /**
-     * @param FeatureInterface $feature
-     * @return $this
-     */
-    public function addFeature(FeatureInterface $feature)
+    public function addFeature(FeatureInterface $feature): self
     {
         $this->features[$feature->getName()] = $feature;
 
@@ -48,30 +38,26 @@ class ArrayDataProvider implements DataProvider, \IteratorAggregate
     }
 
     /**
-     * @param FeatureInterface[] $features
+     * @param iterable<mixed> $features
      */
-    public function addFeatures(array $features)
+    public function addFeatures(iterable $features): self
     {
-        array_walk($features, function (&$value, $key) {
-            if (!$value instanceof FeatureInterface) {
+        foreach ($features as $key => $feature) {
+            if (!$feature instanceof FeatureInterface) {
                 throw new \LogicException('Item ' . $key . ' is not a Feature');
             }
 
-            $this->addFeature($value);
-        });
+            $this->addFeature($feature);
+        }
+
+        return $this;
     }
 
-
     /**
-     * (PHP 5 &gt;= 5.0.0)<br/>
-     * Retrieve an external iterator
-     * @link http://php.net/manual/en/iteratoraggregate.getiterator.php
-     * @return Traversable An instance of an object implementing <b>Iterator</b> or
-     * <b>Traversable</b>
+     * @return \Traversable<string, FeatureInterface>
      */
-    public function getIterator()
+    public function getIterator(): \Traversable
     {
         return new \ArrayIterator($this->features);
     }
-
 }

@@ -1,29 +1,15 @@
 <?php
-/**
- * @copyright 2ndInterface 2014 - Robin Breuker
- */
-class User
-{
-    /**
-     * @var int
-     */
-    private $id;
 
-    /**
-     * @param int $id
-     */
-    public function __construct($id)
+declare(strict_types=1);
+
+final class User
+{
+    public function __construct(private readonly int $id)
     {
-        $this->id = $id;
     }
 
-
-    /**
-     * @return int
-     */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 }
-

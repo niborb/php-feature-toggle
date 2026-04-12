@@ -1,32 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Niborb\FeatureToggle\Entity;
 
-
-/**
- * Interface FeatureInterface
- * @package Niborb\FeatureToggle\Entity
- */
 interface FeatureInterface
 {
-    /**
-     * @return string
-     */
-    public function getName();
+    public function getName(): string;
 
-    /**
-     * @return FeatureInterface
-     */
-    public function enable();
+    public function enable(): static;
 
-    /**
-     * @return boolean
-     */
-    public function isEnabled();
+    public function disable(): static;
 
-    /**
-     * @return FeatureInterface
-     */
-    public function disable();
-
+    public function isEnabled(): bool;
 }

@@ -1,90 +1,58 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Niborb\FeatureToggle\Entity;
 
 class Feature implements FeatureExpressionInterface
 {
+    private readonly string $name;
 
-    /**
-     * @var string
-     */
-    private $name = '';
+    private bool $enabled = false;
 
-    /**
-     * @var bool
-     */
-    private $enabled = false;
+    private string $expression = '';
 
-    /**
-     * @var string
-     */
-    private $expression = '';
-
-
-    /**
-     * @param $name
-     */
-    public function __construct($name)
+    public function __construct(string $name)
     {
-        if (0 === strlen(trim($name))) {
-            throw new \LogicException("Name cannot be empty");
+        if (trim($name) === '') {
+            throw new \LogicException('Name cannot be empty');
         }
 
         $this->name = $name;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return $this
-     */
-    public function enable()
+    public function enable(): static
     {
         $this->enabled = true;
 
         return $this;
     }
 
-    /**
-     * @return bool
-     */
-    public function isEnabled()
-    {
-        return $this->enabled;
-    }
-
-    /**
-     * @return $this
-     */
-    public function disable()
+    public function disable(): static
     {
         $this->enabled = false;
 
         return $this;
     }
 
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
 
-    /**
-     * @param $expression
-     * @return $this
-     */
-    public function setExpression($expression)
+    public function setExpression(string $expression): static
     {
         $this->expression = $expression;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getExpression()
+    public function getExpression(): string
     {
         return $this->expression;
     }
