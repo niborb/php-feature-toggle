@@ -44,7 +44,8 @@ class ArrayDataProvider implements DataProvider, \IteratorAggregate
     {
         foreach ($features as $key => $feature) {
             if (!$feature instanceof FeatureInterface) {
-                throw new \LogicException('Item ' . $key . ' is not a Feature');
+                $position = is_scalar($key) ? (string) $key : get_debug_type($key);
+                throw new \LogicException('Item ' . $position . ' is not a Feature');
             }
 
             $this->addFeature($feature);

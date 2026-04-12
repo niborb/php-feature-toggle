@@ -28,7 +28,7 @@ Runtime (`composer.json`):
 
 Dev:
 - `phpunit/phpunit: ^11.0` — test framework.
-- `phpstan/phpstan: ^1.11` — static analysis at `level: 8`.
+- `phpstan/phpstan: ^2.1` — static analysis at `level: 10` (the strictest).
 - `symfony/cache: ^6.4 || ^7.0` — used by examples for the PSR-6 cache pool.
 
 ## Repository layout
@@ -57,7 +57,7 @@ examples/                           # Runnable usage examples
 
 .github/workflows/ci.yml            # GitHub Actions CI (PHPUnit + PHPStan)
 phpunit.xml.dist                    # PHPUnit config
-phpstan.neon.dist                   # PHPStan config (level 8, src + tests)
+phpstan.neon.dist                   # PHPStan config (level 10, src + tests)
 composer.json
 ```
 
