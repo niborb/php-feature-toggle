@@ -17,7 +17,10 @@ runtime context (e.g. the current user).
 
 The codebase was modernized from a legacy PHP 5.5/5.6 codebase. All source files
 use `declare(strict_types=1);`, parameter and return type hints, readonly
-properties where appropriate, and constructor property promotion.
+properties where appropriate, and constructor property promotion. The three
+concrete classes (`Toggle`, `Feature`, `ArrayDataProvider`) are `final` —
+extend behavior by implementing `FeatureInterface` /
+`FeatureExpressionInterface` / `DataProvider` instead of subclassing.
 
 ## Dependencies
 
@@ -55,9 +58,13 @@ examples/                           # Runnable usage examples
 ├── example-expression-with-cache.php
 └── User.php
 
-.github/workflows/ci.yml            # GitHub Actions CI (PHPUnit + PHPStan)
+.github/
+├── workflows/ci.yml                # GitHub Actions CI (PHPUnit + PHPStan)
+└── dependabot.yml                  # Composer + GitHub Actions dependency updates
 phpunit.xml.dist                    # PHPUnit config
 phpstan.neon.dist                   # PHPStan config (level 10, src + tests)
+.editorconfig
+CHANGELOG.md
 composer.json
 ```
 
@@ -162,7 +169,10 @@ once on PHP 8.3.
 3. If it stores features, implement `DataProvider`.
 4. Add a matching PHPUnit test under `tests/...` named `<Class>Test`,
    extending `PHPUnit\Framework\TestCase`. Use `final class …`.
-5. Run `composer test && composer phpstan` and ensure both pass.
+5. When mocking, mock the interface (`DataProvider`, `FeatureInterface`,
+   etc.) — never the concrete final classes; PHPUnit cannot double them.
+6. Run `composer test && composer phpstan` and ensure both pass.
+7. Add a `## [Unreleased]` entry to `CHANGELOG.md`.
 
 ## Gotchas
 

@@ -9,7 +9,7 @@ use Niborb\FeatureToggle\Entity\FeatureExpressionInterface;
 use Niborb\FeatureToggle\Entity\FeatureInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
-class Toggle
+final class Toggle
 {
     private DataProvider $dataProvider;
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Niborb\FeatureToggle\Entity;
 
-class Feature implements FeatureExpressionInterface
+final class Feature implements FeatureExpressionInterface
 {
     private readonly string $name;
 

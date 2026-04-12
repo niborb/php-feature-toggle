@@ -10,7 +10,7 @@ use Niborb\FeatureToggle\Entity\FeatureInterface;
 /**
  * @implements \IteratorAggregate<string, FeatureInterface>
  */
-class ArrayDataProvider implements DataProvider, \IteratorAggregate
+final class ArrayDataProvider implements DataProvider, \IteratorAggregate
 {
     /**
      * @var array<string, FeatureInterface>

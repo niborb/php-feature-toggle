@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Niborb\FeatureToggle\Tests;
 
-use Niborb\FeatureToggle\DataProvider\ArrayDataProvider;
+use Niborb\FeatureToggle\DataProvider;
 use Niborb\FeatureToggle\Entity\Feature;
 use Niborb\FeatureToggle\Toggle;
 use PHPUnit\Framework\TestCase;
@@ -41,7 +41,7 @@ final class ToggleTest extends TestCase
 
     public function testItDelegatesFetchToInjectedDataProvider(): void
     {
-        $provider = $this->createMock(ArrayDataProvider::class);
+        $provider = $this->createMock(DataProvider::class);
         $provider->expects(self::once())
             ->method('fetchFeature')
             ->with('feature-name')

@@ -96,6 +96,11 @@ composer test       # PHPUnit
 composer phpstan    # PHPStan (level 8)
 ```
 
+### Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for the list of changes and the migration
+guide from v0.x.
+
 ### License
 
 MIT — see [LICENSE](LICENSE).
