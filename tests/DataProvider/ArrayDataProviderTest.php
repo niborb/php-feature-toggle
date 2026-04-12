@@ -35,7 +35,6 @@ final class ArrayDataProviderTest extends TestCase
     {
         $this->expectException(\LogicException::class);
 
-        /** @phpstan-ignore-next-line */
         new ArrayDataProvider([new \stdClass()]);
     }
 

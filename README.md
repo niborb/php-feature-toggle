@@ -1,70 +1,101 @@
-## PHP 5 feature toggle library
+## PHP feature toggle library
 
-[![Build Status](https://travis-ci.org/niborb/php-feature-toggle.png?branch=master)](https://travis-ci.org/niborb/php-feature-toggle)
-[![Coverage Status](https://img.shields.io/coveralls/niborb/php-feature-toggle.svg)](https://coveralls.io/r/niborb/php-feature-toggle)
+A small, dependency-light feature toggle library for PHP 8.2+. Features can be
+toggled on/off and optionally gated behind a Symfony ExpressionLanguage
+expression evaluated against a runtime context.
+
+### Requirements
+
+- PHP `^8.2`
+- `symfony/expression-language` `^6.4 || ^7.0`
 
 ### Installation
 
-You can install the library with Composer.
+```bash
+composer require niborb/php-feature-toggle
+```
 
-    composer.phar require "niborb/php-feature-toggle"
+See also [packagist.org/packages/niborb/php-feature-toggle](https://packagist.org/packages/niborb/php-feature-toggle).
 
-or check packagist.org: https://packagist.org/packages/niborb/php-feature-toggle
-
-### Example (see also the examples directory)
+### Quick start
 
 ```php
+<?php
+
 require 'vendor/autoload.php';
 
-require 'User.php';
-
-use Doctrine\Common\Cache\ArrayCache;
-use Niborb\FeatureToggle\Cache\CacheProxy;
 use Niborb\FeatureToggle\Entity\Feature;
 use Niborb\FeatureToggle\Toggle;
-use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
 $toggle = new Toggle();
-$toggle->setExpressionLanguage(
-    new ExpressionLanguage(
-        new CacheProxy(
-            new ArrayCache()
-        )
-    )
-);
 
-// new user interface only available for users with an ID in range (1000-2000)
-$feature = new Feature('user-interface-2.0');
-$feature->enable();
-$feature->setExpression('user.getId() in 1000..2000');
-
-// add user to the toggle manager
+$feature = (new Feature('user-interface-2.0'))->enable();
 $toggle->addFeature($feature);
 
-// some users as context
-$userOne = new User(3000);
-$userTwo = new User(1500);
+if ($toggle->isEnabled('user-interface-2.0')) {
+    echo 'New UI enabled' . PHP_EOL;
+}
+```
 
-// check for both users if the feature is enabled
+### Expression-based toggles
 
-foreach ([$userOne, $userTwo] as $user) {
-    if ($toggle->isEnabled('user-interface-2.0', ['user' => $user])
-    ) {
-        echo "User " . $user->getId() . " can see new interface" . PHP_EOL;
-    } else {
-        echo "User " . $user->getId() . " cannot(!) see new interface" . PHP_EOL;
-    }
+Pass a Symfony `ExpressionLanguage` instance to the `Toggle` constructor and
+attach an expression to a feature. The expression is evaluated against the
+context array passed to `isEnabled()`.
+
+```php
+<?php
+
+require 'vendor/autoload.php';
+require 'User.php';
+
+use Niborb\FeatureToggle\Entity\Feature;
+use Niborb\FeatureToggle\Toggle;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
+use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
+
+$toggle = new Toggle(
+    new ExpressionLanguage(new ArrayAdapter()), // optional PSR-6 cache pool
+);
+
+$feature = (new Feature('user-interface-2.0'))
+    ->enable()
+    ->setExpression('user.getId() in 1000..2000');
+
+$toggle->addFeature($feature);
+
+foreach ([new User(3000), new User(1500)] as $user) {
+    $enabled = $toggle->isEnabled('user-interface-2.0', ['user' => $user]);
+    echo "User {$user->getId()} " . ($enabled ? 'can' : 'cannot') . " see new interface" . PHP_EOL;
 }
 ```
 
 Output:
 
-    User 3000 cannot(!) see new interface
-    User 1500 can see new interface
+```
+User 3000 cannot see new interface
+User 1500 can see new interface
+```
 
+More runnable examples in [`examples/`](examples/).
 
-### PHPSpec
+### Custom data providers
 
-The library contains PHPSpec tests (./spec). Clone the repository and run:
+`Toggle` defaults to an in-memory `ArrayDataProvider`. You can plug in any
+implementation of `Niborb\FeatureToggle\DataProvider`:
 
-    vendor/bin/phpspec run
+```php
+$toggle = new Toggle(null, new MyDatabaseDataProvider($pdo));
+```
+
+### Development
+
+```bash
+composer install
+composer test       # PHPUnit
+composer phpstan    # PHPStan (level 8)
+```
+
+### License
+
+MIT — see [LICENSE](LICENSE).
