@@ -20,7 +20,7 @@ final class Toggle
         $this->dataProvider = $dataProvider ?? new ArrayDataProvider();
     }
 
-    public function addFeature(FeatureInterface $feature): self
+    public function addFeature(FeatureInterface $feature): static
     {
         $this->dataProvider->addFeature($feature);
 

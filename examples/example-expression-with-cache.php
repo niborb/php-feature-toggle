@@ -10,8 +10,7 @@ use Niborb\FeatureToggle\Toggle;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
-// Modern Symfony ExpressionLanguage takes a PSR-6 CacheItemPoolInterface
-// directly — no proxy needed.
+// ExpressionLanguage caches parsed expressions in a PSR-6 cache pool.
 $toggle = new Toggle(
     new ExpressionLanguage(new ArrayAdapter()),
 );

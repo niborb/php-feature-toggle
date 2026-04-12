@@ -10,5 +10,5 @@ interface DataProvider
 {
     public function fetchFeature(string $featureName): ?FeatureInterface;
 
-    public function addFeature(FeatureInterface $feature): self;
+    public function addFeature(FeatureInterface $feature): static;
 }

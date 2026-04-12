@@ -18,7 +18,7 @@ final class ArrayDataProvider implements DataProvider, \IteratorAggregate
     private array $features = [];
 
     /**
-     * @param iterable<mixed> $features
+     * @param iterable<array-key, mixed> $features
      */
     public function __construct(iterable $features = [])
     {
@@ -30,7 +30,7 @@ final class ArrayDataProvider implements DataProvider, \IteratorAggregate
         return $this->features[$featureName] ?? null;
     }
 
-    public function addFeature(FeatureInterface $feature): self
+    public function addFeature(FeatureInterface $feature): static
     {
         $this->features[$feature->getName()] = $feature;
 
@@ -38,14 +38,13 @@ final class ArrayDataProvider implements DataProvider, \IteratorAggregate
     }
 
     /**
-     * @param iterable<mixed> $features
+     * @param iterable<array-key, mixed> $features
      */
-    public function addFeatures(iterable $features): self
+    public function addFeatures(iterable $features): static
     {
         foreach ($features as $key => $feature) {
             if (!$feature instanceof FeatureInterface) {
-                $position = is_scalar($key) ? (string) $key : get_debug_type($key);
-                throw new \LogicException('Item ' . $position . ' is not a Feature');
+                throw new \LogicException("Item {$key} is not a Feature");
             }
 
             $this->addFeature($feature);
